@@ -1,9 +1,8 @@
 import { HashRouter as BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
-import EmployeeList from './pages/EmployeeList';
-import EmployeeDetail from './pages/EmployeeDetail';
-import Goals from './pages/Goals';
+import TeamList from './pages/TeamList';
+import TeamDetail from './pages/TeamDetail';
 import Reports from './pages/Reports';
 
 function App() {
@@ -12,9 +11,8 @@ function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/employees" element={<EmployeeList />} />
-          <Route path="/employees/:id" element={<EmployeeDetail />} />
-          <Route path="/goals" element={<Goals />} />
+          <Route path="/team" element={<TeamList />} />
+          <Route path="/team/:id" element={<TeamDetail />} />
           <Route path="/reports" element={<Reports />} />
         </Route>
       </Routes>

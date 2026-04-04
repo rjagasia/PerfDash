@@ -1,10 +1,9 @@
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Users, Target, BarChart2, Bell } from 'lucide-react';
+import { LayoutDashboard, Users, BarChart2, Bell } from 'lucide-react';
 
 const nav = [
   { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
-  { to: '/employees', icon: Users, label: 'Employees' },
-  { to: '/goals', icon: Target, label: 'Goals' },
+  { to: '/team', icon: Users, label: 'Team Leads' },
   { to: '/reports', icon: BarChart2, label: 'Reports' },
 ];
 
@@ -47,13 +46,12 @@ export default function Sidebar() {
         <div className="flex items-center gap-3 px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-800 cursor-pointer">
           <Bell size={18} />
           <span className="text-sm font-medium">Notifications</span>
-          <span className="ml-auto bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
         </div>
         <div className="flex items-center gap-3 px-3 py-2 mt-1 rounded-lg">
-          <div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-xs font-bold text-white">SK</div>
+          <div className="w-8 h-8 rounded-full bg-indigo-500 flex items-center justify-center text-xs font-bold text-white">RI</div>
           <div>
-            <div className="text-sm font-medium text-white">Sarah Kim</div>
-            <div className="text-xs text-slate-400">CEO</div>
+            <div className="text-sm font-medium text-white">Ria</div>
+            <div className="text-xs text-slate-400">Director</div>
           </div>
         </div>
       </div>

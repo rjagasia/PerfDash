@@ -1,176 +1,145 @@
 import {
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  ScatterChart, Scatter, ZAxis, LineChart, Line, Legend,
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell,
 } from 'recharts';
-import { employees, departmentColors } from '../data/employees';
+import { teamLeads, tierColors, isAtRisk } from '../data/strategists';
 
-const avg = (arr) => arr.reduce((a, b) => a + b, 0) / arr.length;
+const totalCases = teamLeads.reduce((a, tl) => a + (tl.totalCases || 0), 0);
+const totalStrategists = teamLeads.reduce((a, tl) => a + tl.strategists.length, 0);
+const atRiskTotal = teamLeads.flatMap((tl) => tl.strategists).filter(isAtRisk).length;
 
-const deptStats = Object.entries(departmentColors).map(([dept]) => {
-  const emps = employees.filter((e) => e.department === dept);
-  if (!emps.length) return null;
-  return {
-    dept,
-    avgScore: Number(avg(emps.map((e) => e.score)).toFixed(2)),
-    avgQuality: Math.round(avg(emps.map((e) => e.metrics.quality))),
-    avgVelocity: Math.round(avg(emps.map((e) => e.metrics.velocity))),
-    avgCollab: Math.round(avg(emps.map((e) => e.metrics.collaboration))),
-    avgInitiative: Math.round(avg(emps.map((e) => e.metrics.initiative))),
-    headcount: emps.length,
-    topPerformers: emps.filter((e) => e.score >= 4.5).length,
-    goalsCompleted: emps.flatMap((e) => e.goals).filter((g) => g.status === 'completed').length,
-    totalGoals: emps.flatMap((e) => e.goals).length,
-  };
-}).filter(Boolean);
-
-const quarterlyData = [
-  { quarter: 'Q1 2025', Engineering: 4.35, Design: 4.6, Marketing: 4.1, Sales: 3.95, HR: 3.8, Finance: 4.0 },
-  { quarter: 'Q2 2025', Engineering: 4.45, Design: 4.6, Marketing: 4.3, Sales: 4.15, HR: 3.7, Finance: 4.2 },
-  { quarter: 'Q3 2025', Engineering: 4.55, Design: 4.55, Marketing: 4.5, Sales: 4.25, HR: 3.5, Finance: 4.3 },
-  { quarter: 'Q4 2025', Engineering: 4.5, Design: 4.55, Marketing: 4.5, Sales: 4.2, HR: 3.5, Finance: 4.35 },
-];
-
-const scatterData = employees.map((e) => ({
-  name: e.name,
-  tenure: Math.floor((new Date('2026-04-04') - new Date(e.hireDate)) / (1000 * 60 * 60 * 24 * 365)),
-  score: e.score,
-  dept: e.department,
+const capData = teamLeads.map((tl) => ({
+  name: tl.name,
+  cases: tl.totalCases || 0,
+  strategists: tl.strategists.length,
+  avgCap: tl.strategists.length
+    ? Number((tl.strategists.reduce((a, s) => a + s.capacity, 0) / tl.strategists.length).toFixed(1))
+    : 0,
+  color: tierColors[tl.tier].dot,
 }));
 
-const DEPT_COLORS = Object.values(departmentColors);
-
-function StatCard({ label, value, sub }) {
-  return (
-    <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-100">
-      <div className="text-2xl font-bold text-slate-800">{value}</div>
-      <div className="text-sm font-medium text-slate-700 mt-0.5">{label}</div>
-      {sub && <div className="text-xs text-slate-400 mt-0.5">{sub}</div>}
-    </div>
-  );
-}
-
-const CustomTooltip = ({ active, payload }) => {
+const CustomTooltip = ({ active, payload, label }) => {
   if (active && payload && payload.length) {
-    const d = payload[0].payload;
     return (
-      <div className="bg-white border border-slate-200 rounded-lg px-3 py-2 shadow-lg text-xs">
-        <div className="font-semibold text-slate-800">{d.name}</div>
-        <div className="text-slate-500">{d.dept}</div>
-        <div>Tenure: {d.tenure} yr{d.tenure !== 1 ? 's' : ''}</div>
-        <div>Score: {d.score}</div>
+      <div className="bg-white border border-slate-200 rounded-lg px-3 py-2 shadow-lg text-sm">
+        <div className="font-medium text-slate-700">{label}</div>
+        {payload.map((p) => (
+          <div key={p.dataKey} style={{ color: p.fill || '#6366f1' }}>
+            {p.name}: {p.value}
+          </div>
+        ))}
       </div>
     );
   }
   return null;
 };
 
-export default function Reports() {
-  const totalEmps = employees.length;
-  const overallAvg = avg(employees.map((e) => e.score)).toFixed(2);
-  const totalGoals = employees.flatMap((e) => e.goals).length;
-  const completedGoals = employees.flatMap((e) => e.goals).filter((g) => g.status === 'completed').length;
-  const goalCompletion = Math.round((completedGoals / totalGoals) * 100);
+function StatCard({ label, value, sub }) {
+  return (
+    <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100">
+      <div className="text-2xl font-bold text-slate-800">{value}</div>
+      <div className="text-sm font-medium text-slate-600 mt-0.5">{label}</div>
+      {sub && <div className="text-xs text-slate-400 mt-0.5">{sub}</div>}
+    </div>
+  );
+}
 
+export default function Reports() {
   return (
     <div className="space-y-5">
       <div>
         <h1 className="text-2xl font-bold text-slate-800">Reports</h1>
-        <p className="text-slate-500 text-sm mt-0.5">Analytics and insights across the organization</p>
+        <p className="text-slate-500 text-sm mt-0.5">Capacity and team analytics · 2026</p>
       </div>
 
-      {/* Summary stats */}
       <div className="grid grid-cols-4 gap-4">
-        <StatCard label="Total Employees" value={totalEmps} sub="Active headcount" />
-        <StatCard label="Overall Avg Score" value={overallAvg} sub="Scale of 1–5" />
-        <StatCard label="Goal Completion" value={`${goalCompletion}%`} sub={`${completedGoals} of ${totalGoals} goals done`} />
-        <StatCard label="Top Performers" value={employees.filter((e) => e.score >= 4.5).length} sub="Score ≥ 4.5" />
+        <StatCard label="Team Leads" value={teamLeads.length} sub="Your direct reports" />
+        <StatCard label="Total Strategists" value={totalStrategists} sub="Across all pods" />
+        <StatCard label="Total Cases" value={totalCases.toLocaleString()} sub="2026 capacity" />
+        <StatCard label="At-Risk Strategists" value={atRiskTotal} sub="Flagged in pod notes" />
       </div>
 
-      {/* Quarterly trend by department */}
+      {/* Cases by team lead */}
       <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100">
-        <h2 className="text-sm font-semibold text-slate-700 mb-4">Quarterly Performance Trend by Department</h2>
-        <ResponsiveContainer width="100%" height={240}>
-          <LineChart data={quarterlyData}>
+        <h2 className="text-sm font-semibold text-slate-700 mb-4">Total Cases by Team Lead</h2>
+        <ResponsiveContainer width="100%" height={220}>
+          <BarChart data={capData} barSize={48}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-            <XAxis dataKey="quarter" tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
-            <YAxis domain={[3, 5]} tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
-            <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8 }} />
-            <Legend wrapperStyle={{ fontSize: 12 }} />
-            {Object.entries(departmentColors).map(([dept, color]) => (
-              <Line key={dept} type="monotone" dataKey={dept} stroke={color} strokeWidth={2} dot={false} />
-            ))}
-          </LineChart>
+            <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fontSize: 12, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
+            <Tooltip content={<CustomTooltip />} />
+            <Bar dataKey="cases" name="Cases" radius={[6, 6, 0, 0]}>
+              {capData.map((d) => <Cell key={d.name} fill={d.color} />)}
+            </Bar>
+          </BarChart>
         </ResponsiveContainer>
       </div>
 
-      {/* Dept comparison */}
-      <div className="grid grid-cols-2 gap-4">
-        <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100">
-          <h2 className="text-sm font-semibold text-slate-700 mb-4">Avg Score by Department</h2>
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart data={deptStats} barSize={36}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis dataKey="dept" tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
-              <YAxis domain={[3, 5]} tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
-              <Tooltip formatter={(v) => [v, 'Avg Score']} contentStyle={{ fontSize: 12, borderRadius: 8 }} />
-              <Bar dataKey="avgScore" radius={[6, 6, 0, 0]}>
-                {deptStats.map((d) => (
-                  <rect key={d.dept} fill={departmentColors[d.dept]} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-
-        {/* Tenure vs Score */}
-        <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100">
-          <h2 className="text-sm font-semibold text-slate-700 mb-4">Tenure vs. Performance Score</h2>
-          <ResponsiveContainer width="100%" height={200}>
-            <ScatterChart>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis dataKey="tenure" name="Tenure (yrs)" tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} label={{ value: 'Years', position: 'insideBottom', offset: -2, fontSize: 11, fill: '#94a3b8' }} />
-              <YAxis dataKey="score" domain={[3, 5]} name="Score" tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
-              <ZAxis range={[40, 40]} />
-              <Tooltip content={<CustomTooltip />} />
-              <Scatter data={scatterData} fill="#6366f1" fillOpacity={0.7} />
-            </ScatterChart>
-          </ResponsiveContainer>
-        </div>
+      {/* Avg capacity per strategist */}
+      <div className="bg-white rounded-xl p-5 shadow-sm border border-slate-100">
+        <h2 className="text-sm font-semibold text-slate-700 mb-4">Avg Capacity per Strategist</h2>
+        <ResponsiveContainer width="100%" height={180}>
+          <BarChart data={capData} barSize={48}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+            <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
+            <YAxis tick={{ fontSize: 12, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
+            <Tooltip content={<CustomTooltip />} />
+            <Bar dataKey="avgCap" name="Avg Cap" radius={[6, 6, 0, 0]}>
+              {capData.map((d) => <Cell key={d.name} fill={d.color} />)}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
       </div>
 
-      {/* Department detail table */}
+      {/* Pod breakdown table */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden">
-        <div className="px-5 py-3 bg-slate-50 border-b border-slate-100">
-          <h2 className="text-sm font-semibold text-slate-700">Department Breakdown</h2>
+        <div className="px-5 py-3.5 bg-slate-50 border-b border-slate-100">
+          <h2 className="text-sm font-semibold text-slate-700">Pod Breakdown</h2>
         </div>
         <table className="w-full">
           <thead>
             <tr className="border-b border-slate-100">
-              {['Department', 'Headcount', 'Avg Score', 'Quality', 'Velocity', 'Collab', 'Initiative', 'Goal %'].map((h) => (
+              {['Team Lead', 'Tier', 'Strategists', 'Total Cases', 'Avg Capacity', 'At-Risk', '2026 PR'].map((h) => (
                 <th key={h} className="text-left px-5 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wide">{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {deptStats.sort((a, b) => b.avgScore - a.avgScore).map((d) => {
-              const goalPct = d.totalGoals ? Math.round((d.goalsCompleted / d.totalGoals) * 100) : 0;
+            {teamLeads.map((tl) => {
+              const tc = tierColors[tl.tier];
+              const atRisk = tl.strategists.filter(isAtRisk).length;
+              const avg = tl.strategists.length
+                ? (tl.strategists.reduce((a, s) => a + s.capacity, 0) / tl.strategists.length).toFixed(1)
+                : '—';
               return (
-                <tr key={d.dept} className="border-b border-slate-50 hover:bg-slate-50">
+                <tr key={tl.id} className="border-b border-slate-50 hover:bg-slate-50">
                   <td className="px-5 py-3">
                     <div className="flex items-center gap-2">
-                      <div className="w-2.5 h-2.5 rounded-full" style={{ background: departmentColors[d.dept] }} />
-                      <span className="text-sm font-medium text-slate-700">{d.dept}</span>
+                      <div className="w-7 h-7 rounded-full bg-indigo-100 text-indigo-700 text-xs font-bold flex items-center justify-center">
+                        {tl.avatar}
+                      </div>
+                      <span className="text-sm font-medium text-slate-800">{tl.name}</span>
                     </div>
                   </td>
-                  <td className="px-5 py-3 text-sm text-slate-600">{d.headcount}</td>
                   <td className="px-5 py-3">
-                    <span className="text-sm font-bold" style={{ color: departmentColors[d.dept] }}>{d.avgScore}</span>
+                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${tc.bg} ${tc.text}`}>{tl.tier}</span>
                   </td>
-                  <td className="px-5 py-3 text-sm text-slate-600">{d.avgQuality}</td>
-                  <td className="px-5 py-3 text-sm text-slate-600">{d.avgVelocity}</td>
-                  <td className="px-5 py-3 text-sm text-slate-600">{d.avgCollab}</td>
-                  <td className="px-5 py-3 text-sm text-slate-600">{d.avgInitiative}</td>
-                  <td className="px-5 py-3 text-sm text-slate-600">{goalPct}%</td>
+                  <td className="px-5 py-3 text-sm text-slate-600">{tl.strategists.length}</td>
+                  <td className="px-5 py-3 text-sm font-semibold text-slate-700">{tl.totalCases ?? '—'}</td>
+                  <td className="px-5 py-3 text-sm text-slate-600">{avg}</td>
+                  <td className="px-5 py-3">
+                    {atRisk > 0 ? (
+                      <span className="text-xs bg-rose-100 text-rose-600 px-2 py-0.5 rounded-full font-medium">{atRisk}</span>
+                    ) : (
+                      <span className="text-xs text-slate-300">—</span>
+                    )}
+                  </td>
+                  <td className="px-5 py-3">
+                    {tl.performanceRating ? (
+                      <span className="text-sm font-bold text-indigo-600">{tl.performanceRating}</span>
+                    ) : (
+                      <span className="text-xs text-slate-300 italic">TBD</span>
+                    )}
+                  </td>
                 </tr>
               );
             })}
