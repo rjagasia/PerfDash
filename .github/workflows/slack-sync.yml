@@ -1,0 +1,32 @@
+name: Sync Slack Activity
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # Every day at 6am UTC
+  workflow_dispatch:        # Allow manual trigger from GitHub UI
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Fetch Slack activity
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+        run: node scripts/fetch-slack-activity.mjs
+
+      - name: Commit updated slack-data.json
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/slack-data.json
+          git diff --cached --quiet || git commit -m "chore: update Slack activity data [skip ci]"
+          git push

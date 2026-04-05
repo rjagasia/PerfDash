@@ -17,6 +17,7 @@ export const teamLeads = [
     totalCases: 506,
     performanceRating: null, // 2026 PR — to be filled in
     slackHandle: 'mari',
+    slackUserId: 'U031AF773GR',
     // Strategists in Mari's pod
     strategists: [
       { name: 'Alex Ohanyan', capacity: 35, pr: null, notes: 'staying in pod, move from weighted cap to 35 for plat' },
@@ -46,6 +47,7 @@ export const teamLeads = [
     totalCases: 565,
     performanceRating: null,
     slackHandle: 'daisy',
+    slackUserId: 'U068NB8NWV9',
     strategists: [
       { name: 'Dana Crum', capacity: 35, pr: null, notes: 'staying in pod' },
       { name: 'Kaireth Kim', capacity: 50, pr: null, notes: 'staying in pod' },
@@ -75,6 +77,7 @@ export const teamLeads = [
     totalCases: 585,
     performanceRating: null,
     slackHandle: 'helen',
+    slackUserId: 'U07BDRZ2U9Z',
     strategists: [
       { name: 'Sydney Gehrking', capacity: 50, pr: null, notes: 'staying in pod' },
       { name: 'Annie Lai', capacity: 50, pr: null, notes: 'staying in pod' },
@@ -102,6 +105,7 @@ export const teamLeads = [
     totalCases: 640,
     performanceRating: null,
     slackHandle: 'mehreen',
+    slackUserId: 'U05SYT8FAGY',
     strategists: [
       { name: 'Camille Green-Bartholomew', capacity: 50, pr: null, notes: 'from sya\'s pod' },
       { name: 'Will Anderson', capacity: 50, pr: null, notes: 'staying in pod' },
@@ -129,6 +133,7 @@ export const teamLeads = [
     totalCases: 285.5,
     performanceRating: null,
     slackHandle: 'amelie',
+    slackUserId: 'U08PCL5F6AG',
     strategists: [
       { name: 'Alessandro Recchia', capacity: 50, pr: null, notes: 'likely moving to FT summer 2026, from sya\'s pod' },
       { name: 'Marivi Ledo de Tejada', capacity: 50, pr: null, notes: 'from sya\'s pod' },
@@ -150,6 +155,7 @@ export const teamLeads = [
     totalCases: null,
     performanceRating: null,
     slackHandle: 'davit',
+    slackUserId: 'U08KWLYBBM1',
     strategists: [
       { name: 'Glenda May', capacity: 20, pr: null, notes: 'moved from apac1' },
       { name: 'Aristotle Vossos', capacity: 50, pr: null, notes: '' },

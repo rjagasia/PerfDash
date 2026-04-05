@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell,
 } from 'recharts';
-import { Users, BarChart2, AlertTriangle, ChevronRight, MessageSquare } from 'lucide-react';
+import { Users, BarChart2, AlertTriangle, ChevronRight, MessageSquare, RefreshCw } from 'lucide-react';
 import { teamLeads, tierColors, isAtRisk } from '../data/strategists';
 
 const totalStrategists = teamLeads.reduce((a, tl) => a + tl.strategists.length, 0);
@@ -52,9 +53,26 @@ const CustomTooltip = ({ active, payload, label }) => {
 };
 
 export default function Dashboard() {
+  const [slackData, setSlackData] = useState(null);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.BASE_URL}slack-data.json`)
+      .then((r) => r.ok ? r.json() : null)
+      .then((d) => setSlackData(d))
+      .catch(() => {});
+  }, []);
+
   const atRiskMembers = teamLeads.flatMap((tl) =>
     tl.strategists.filter(isAtRisk).map((s) => ({ ...s, teamLead: tl }))
   );
+
+  const slackConfigured = slackData && Object.keys(slackData.strategists || {}).length > 0;
+  const totalMessages7d = slackConfigured
+    ? Object.values(slackData.strategists).reduce((a, s) => a + (s.messagesLast7Days || 0), 0)
+    : null;
+  const lastSynced = slackData?.lastUpdated
+    ? new Date(slackData.lastUpdated).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' })
+    : null;
 
   return (
     <div className="space-y-6">
@@ -233,12 +251,24 @@ export default function Dashboard() {
             </div>
           )}
 
-          {/* Slack coming soon */}
+          {/* Slack activity summary */}
           <div className="mt-4 pt-4 border-t border-slate-100">
-            <div className="flex items-center gap-2 text-xs text-slate-400">
-              <MessageSquare size={14} />
-              <span>Slack activity integration — coming soon</span>
-            </div>
+            {slackConfigured ? (
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-xs text-green-600">
+                  <MessageSquare size={13} />
+                  <span><strong>{totalMessages7d}</strong> messages across student channels (last 7d)</span>
+                </div>
+                <span className="text-xs text-slate-400 flex items-center gap-1">
+                  <RefreshCw size={11} /> {lastSynced}
+                </span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2 text-xs text-slate-400">
+                <MessageSquare size={13} />
+                <span>Slack sync not configured — see setup instructions in repo.</span>
+              </div>
+            )}
           </div>
         </div>
       </div>
