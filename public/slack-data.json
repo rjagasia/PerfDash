@@ -1,5 +1,120 @@
 {
-  "lastUpdated": null,
-  "channelsScanned": 0,
-  "strategists": {}
+  "lastUpdated": "2026-04-05T00:00:00Z",
+  "channelsScanned": "manual-sync",
+  "note": "Data collected via Slack search on 2026-04-05. Message counts are minimums — search results capped at 20 per query. Daisy's client channel activity may be higher as much of her work appears in private channels.",
+  "strategists": {
+    "U031AF773GR": {
+      "userId": "U031AF773GR",
+      "displayName": "Mari",
+      "realName": "Mari Segovia",
+      "email": "m.segovia@crimsoneducation.org",
+      "channelCount": 8,
+      "messagesLast7Days": 20,
+      "messagesLast30Days": 20,
+      "lastActive": "2026-04-04T00:00:00Z",
+      "channels": [
+        "client-luiz-guilherme-gaudenzi-26-27",
+        "client-shany-bercovich-rodriguez-25-26",
+        "client-serena-ho-28-29",
+        "client-ameya-mullapudi-27-28",
+        "concierge-client-kyri-xiao-26-27",
+        "client-aanya-thaker-27-28",
+        "client-sanaya-sharan-27-28",
+        "concierge-client-richard-shi-25-26"
+      ]
+    },
+    "U068NB8NWV9": {
+      "userId": "U068NB8NWV9",
+      "displayName": "Daisy",
+      "realName": "Daisy Oliver",
+      "email": "d.oliver@crimsoneducation.org",
+      "channelCount": 2,
+      "messagesLast7Days": 2,
+      "messagesLast30Days": 2,
+      "lastActive": "2026-04-04T00:00:00Z",
+      "note": "Most recent activity visible in DMs and leadership channels. May have higher activity in private client channels not accessible via public search.",
+      "channels": [
+        "client-ruby-price-27-28",
+        "client-lucas-tam-25-26"
+      ]
+    },
+    "U07BDRZ2U9Z": {
+      "userId": "U07BDRZ2U9Z",
+      "displayName": "Helen",
+      "realName": "Helen Zhu",
+      "email": "m.zhu@crimsoneducation.org",
+      "channelCount": 8,
+      "messagesLast7Days": 20,
+      "messagesLast30Days": 20,
+      "lastActive": "2026-04-05T00:00:00Z",
+      "channels": [
+        "concierge-client-yuelin-qu-26-27",
+        "client-samuel-ding-26-27",
+        "client-juliet-farashahi-26-27",
+        "concierge-client-julius-cheung-25-26",
+        "vip-client-catherine-yang-27-28",
+        "client-deepika-manikonda-26-27",
+        "concierge-client-kevin-gu-26-27",
+        "vip-client-angel-xin-25-26"
+      ]
+    },
+    "U05SYT8FAGY": {
+      "userId": "U05SYT8FAGY",
+      "displayName": "Mehreen",
+      "realName": "Mehreen Sheikh",
+      "email": "m.sheikh@crimsoneducation.org",
+      "channelCount": 6,
+      "messagesLast7Days": 20,
+      "messagesLast30Days": 20,
+      "lastActive": "2026-04-04T00:00:00Z",
+      "channels": [
+        "client-neel-bhardwaj-27-28",
+        "vip-client-abby-qu-25-26",
+        "client-connor-lin-27-28",
+        "client-aria-nathani-28-29",
+        "vip-client-armanda-mazzone-26-27",
+        "vip-client-nicolas-brenninkmeijer-26-27"
+      ]
+    },
+    "U08PCL5F6AG": {
+      "userId": "U08PCL5F6AG",
+      "displayName": "Amelie",
+      "realName": "Amelie Lasker",
+      "email": "a.lasker@crimsoneducation.org",
+      "channelCount": 8,
+      "messagesLast7Days": 20,
+      "messagesLast30Days": 20,
+      "lastActive": "2026-04-05T00:00:00Z",
+      "channels": [
+        "client-ibrahim-nadeem-25-26",
+        "concierge-client-duncan-lawrie-26-27",
+        "client-isha-majumdar-25-26",
+        "client-taylor-trauber-26-27",
+        "vip-concierge-client-zavier-chen-27-28",
+        "client-katherine-xu-26-27",
+        "client-katherine-park-27-28",
+        "client-meade-gibbons-25-26"
+      ]
+    },
+    "U08KWLYBBM1": {
+      "userId": "U08KWLYBBM1",
+      "displayName": "Davit",
+      "realName": "Davit Gasparyan",
+      "email": "d.gasparyan@crimsoneducation.org",
+      "channelCount": 8,
+      "messagesLast7Days": 20,
+      "messagesLast30Days": 20,
+      "lastActive": "2026-04-03T00:00:00Z",
+      "channels": [
+        "client-daulet-shakan-26-27",
+        "client-amir-malshakov-26-27",
+        "client-samira-sagitdinova-26-27",
+        "client-raphael-pinarbasi-25-26",
+        "vip-client-alena-semenova-28-29",
+        "client-elizaveta-airapetian-25-26",
+        "client-ekaterina-sorokina-27-28",
+        "client-ayubkhon-akhadov-26-27"
+      ]
+    }
+  }
 }
