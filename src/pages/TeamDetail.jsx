@@ -61,31 +61,31 @@ function StrategistFeedback({ tlId, strategistName }) {
   );
 }
 
-// Slack activity panel for a single strategist
-function SlackActivity({ strategistName, slackData }) {
+// Slack activity panel for a team lead (matched by userId)
+function SlackActivity({ slackUserId, displayName, slackData }) {
   if (!slackData) {
     return (
       <div className="text-xs text-slate-400 italic flex items-center gap-1.5">
         <MessageSquare size={12} />
-        Slack sync not yet configured — see setup instructions.
+        Slack sync not yet configured.
       </div>
     );
   }
 
-  // Match by name (case-insensitive, first name or full name)
-  const firstName = strategistName.split(' ')[0].toLowerCase();
-  const fullName = strategistName.toLowerCase();
-  const entry = Object.values(slackData.strategists || {}).find((s) => {
-    const dn = (s.displayName || '').toLowerCase();
-    const rn = (s.realName || '').toLowerCase();
-    return dn === firstName || dn === fullName || rn === fullName || rn.startsWith(firstName);
-  });
+  const entry = slackUserId
+    ? slackData.strategists?.[slackUserId]
+    : Object.values(slackData.strategists || {}).find((s) => {
+        const dn = (s.displayName || '').toLowerCase();
+        const rn = (s.realName || '').toLowerCase();
+        const fn = (displayName || '').toLowerCase();
+        return dn === fn || rn.startsWith(fn);
+      });
 
   if (!entry) {
     return (
       <div className="text-xs text-slate-400 italic flex items-center gap-1.5">
         <MessageSquare size={12} />
-        No Slack data found for {strategistName}.
+        No Slack data found for {displayName}.
       </div>
     );
   }
@@ -133,7 +133,7 @@ function StrategistPanel({ strategist, tlId, slackData }) {
         <StrategistFeedback tlId={tlId} strategistName={strategist.name} />
       )}
       {tab === 'slack' && (
-        <SlackActivity strategistName={strategist.name} slackData={slackData} />
+        <SlackActivity displayName={strategist.name} slackData={slackData} />
       )}
     </div>
   );
@@ -261,6 +261,16 @@ export default function TeamDetail() {
                 </div>
               </div>
             </div>
+
+            {slackData && (
+              <div className="mt-4 pt-4 border-t border-slate-100">
+                <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 mb-2">
+                  <MessageSquare size={12} />
+                  Slack Activity (own student channels)
+                </div>
+                <SlackActivity slackUserId={tl.slackUserId} displayName={tl.name} slackData={slackData} />
+              </div>
+            )}
           </div>
         </div>
       </div>
