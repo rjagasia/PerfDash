@@ -216,16 +216,18 @@ export default function Dashboard() {
             ) : filtered.map((s, i) => {
               const risk = isAtRisk(s);
               const tc = tierColors[s.pod.tier];
-              // Lookup Slack activity by strategist name
+              // Lookup Slack activity by userId (preferred) or name fallback
               const slackEntry = slackData
-                ? (() => {
-                    const fn = s.name.split(' ')[0].toLowerCase();
-                    return Object.values(slackData.strategists || {}).find((e) => {
-                      const dn = (e.displayName || '').toLowerCase();
-                      const rn = (e.realName || '').toLowerCase();
-                      return dn === s.name.toLowerCase() || rn === s.name.toLowerCase() || dn === fn || rn.startsWith(fn + ' ');
-                    });
-                  })()
+                ? s.slackUserId
+                  ? slackData.strategists?.[s.slackUserId]
+                  : (() => {
+                      const fn = s.name.split(' ')[0].toLowerCase();
+                      return Object.values(slackData.strategists || {}).find((e) => {
+                        const dn = (e.displayName || '').toLowerCase();
+                        const rn = (e.realName || '').toLowerCase();
+                        return dn === s.name.toLowerCase() || rn === s.name.toLowerCase() || dn === fn || rn.startsWith(fn + ' ');
+                      });
+                    })()
                 : null;
 
               return (

@@ -133,7 +133,7 @@ function StrategistPanel({ strategist, tlId, slackData }) {
         <StrategistFeedback tlId={tlId} strategistName={strategist.name} />
       )}
       {tab === 'slack' && (
-        <SlackActivity displayName={strategist.name} slackData={slackData} />
+        <SlackActivity slackUserId={strategist.slackUserId} displayName={strategist.name} slackData={slackData} />
       )}
     </div>
   );
