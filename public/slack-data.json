@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-05T00:00:00Z",
+  "lastUpdated": "2026-04-06T00:00:00Z",
   "channelsScanned": "manual-sync",
   "note": "Data collected via Slack search on 2026-04-05. Message counts are minimums — search results capped at 20 per query. Daisy's client channel activity may be higher as much of her work appears in private channels.",
   "strategists": {
@@ -94,6 +94,30 @@
         "client-katherine-xu-26-27",
         "client-katherine-park-27-28",
         "client-meade-gibbons-25-26"
+      ]
+    },
+    "U07LJKKK7NG": {
+      "userId": "U07LJKKK7NG",
+      "displayName": "Dan Godlin",
+      "realName": "Dan Godlin",
+      "channelCount": 13,
+      "messagesLast7Days": 20,
+      "messagesLast30Days": 20,
+      "lastActive": "2026-04-06T00:00:00Z",
+      "channels": [
+        "client-olivia-khoury-28-29",
+        "concierge-client-theresa-yung-25-26",
+        "concierge-client-terrence-wang-27-28",
+        "concierge-client-beini-lin-26-27",
+        "vip-client-alvin-teng-26-27",
+        "vip-client-andrew-teng-26-27",
+        "vvip-concierge-client-lucas-du-28-29",
+        "client-raj-awasthi-26-27",
+        "client-cael-parker-27-28",
+        "vip-client-noah-gama-26-27",
+        "client-alexander-akhavan-26-27",
+        "client-mika-mustafayev-26-27",
+        "client-hubert-chen-26-27"
       ]
     },
     "U08KWLYBBM1": {
