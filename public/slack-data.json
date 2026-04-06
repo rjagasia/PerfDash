@@ -102,7 +102,7 @@
       "realName": "Dan Godlin",
       "channelCount": 13,
       "messagesLast7Days": 20,
-      "messagesLast30Days": 20,
+      "messagesLast30Days": 40,
       "lastActive": "2026-04-06T00:00:00Z",
       "channels": [
         "client-olivia-khoury-28-29",
@@ -118,7 +118,44 @@
         "client-alexander-akhavan-26-27",
         "client-mika-mustafayev-26-27",
         "client-hubert-chen-26-27"
-      ]
+      ],
+      "aiInsights": {
+        "generatedAt": "2026-04-06T00:00:00Z",
+        "summary": "Dan is highly active across 13+ client channels with strong engagement quality. He demonstrates deep client knowledge and takes initiative on AEM matching and summer programs. A few clients have responsiveness gaps and one VVIP case has a coordination blocker worth addressing.",
+        "strengths": [
+          "Proactively recommending AEM mentors with strong rationale (Tyler Lynn for Alex Akhavan, Roma Panganiban for Madhav, Kelly Britt/Josh Van Zak for Noah Gama)",
+          "Strong client context in messages — references specific grades, goals, and sensitivities when coordinating support",
+          "Active on VVIP/VIP accounts (Lucas Du, Alvin & Andrew Teng, Noah Gama) with appropriate concierge coordination",
+          "Warm, collaborative tone with concierge team; responds well to cross-functional requests"
+        ],
+        "watchItems": [
+          {
+            "client": "Olivia Khoury",
+            "flag": "Client unresponsive",
+            "detail": "Student not responding to CApp messages despite email confirmation — Dan noted this explicitly. May need escalation or alternate outreach."
+          },
+          {
+            "client": "Lucas Du (VVIP)",
+            "flag": "Access blocker",
+            "detail": "Dan flagged he cannot access the handover/alignment doc. This is a VVIP concierge client — blocked access could impact service quality. Check permissions."
+          },
+          {
+            "client": "Raj Awasthi",
+            "flag": "Booking delay",
+            "detail": "Student took 11 days to confirm a session booking, causing Dan to lose the slot. Pattern to watch if recurring with this client."
+          },
+          {
+            "client": "Terrence Wang",
+            "flag": "No response on summer programs",
+            "detail": "Dan noted he hasn't heard back from Terrence on summer program discussions. May need a follow-up nudge."
+          },
+          {
+            "client": "Yixuan Hu",
+            "flag": "Delayed Slack response",
+            "detail": "Dan missed a message in this channel and only saw it late. Minor, but worth monitoring if inbox management becomes a pattern."
+          }
+        ]
+      }
     },
     "U08KWLYBBM1": {
       "userId": "U08KWLYBBM1",

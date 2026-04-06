@@ -94,19 +94,71 @@ function SlackActivity({ slackUserId, displayName, slackData }) {
     ? new Date(entry.lastActive).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
     : '—';
 
+  const insights = entry.aiInsights;
+
   return (
-    <div className="grid grid-cols-4 gap-3">
-      {[
-        { label: 'Student channels', value: entry.channelCount ?? '—' },
-        { label: 'Messages (7d)', value: entry.messagesLast7Days ?? '—' },
-        { label: 'Messages (30d)', value: entry.messagesLast30Days ?? '—' },
-        { label: 'Last active', value: lastActive },
-      ].map(({ label, value }) => (
-        <div key={label} className="bg-white rounded-lg p-2.5 border border-slate-100 text-center">
-          <div className="text-sm font-bold text-slate-800">{value}</div>
-          <div className="text-xs text-slate-400 mt-0.5">{label}</div>
+    <div className="space-y-3">
+      {/* Metric cards */}
+      <div className="grid grid-cols-4 gap-3">
+        {[
+          { label: 'Student channels', value: entry.channelCount ?? '—' },
+          { label: 'Messages (7d)', value: entry.messagesLast7Days ?? '—' },
+          { label: 'Messages (30d)', value: entry.messagesLast30Days ?? '—' },
+          { label: 'Last active', value: lastActive },
+        ].map(({ label, value }) => (
+          <div key={label} className="bg-white rounded-lg p-2.5 border border-slate-100 text-center">
+            <div className="text-sm font-bold text-slate-800">{value}</div>
+            <div className="text-xs text-slate-400 mt-0.5">{label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* AI Insights */}
+      {insights && (
+        <div className="rounded-lg border border-indigo-100 bg-indigo-50/50 p-3 space-y-3">
+          <div className="flex items-center gap-1.5 text-xs font-semibold text-indigo-700">
+            <Activity size={12} />
+            AI Insights
+            <span className="ml-auto text-xs font-normal text-slate-400">
+              {new Date(insights.generatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+            </span>
+          </div>
+
+          <p className="text-xs text-slate-600 leading-relaxed">{insights.summary}</p>
+
+          {insights.strengths?.length > 0 && (
+            <div>
+              <div className="text-xs font-semibold text-emerald-700 mb-1.5">Strengths</div>
+              <ul className="space-y-1">
+                {insights.strengths.map((s, i) => (
+                  <li key={i} className="flex items-start gap-1.5 text-xs text-slate-600">
+                    <span className="text-emerald-500 mt-0.5 flex-shrink-0">✓</span>
+                    {s}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {insights.watchItems?.length > 0 && (
+            <div>
+              <div className="text-xs font-semibold text-amber-700 mb-1.5">Watch Items</div>
+              <div className="space-y-1.5">
+                {insights.watchItems.map((w, i) => (
+                  <div key={i} className="bg-white rounded-lg p-2.5 border border-amber-100">
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <AlertTriangle size={11} className="text-amber-500 flex-shrink-0" />
+                      <span className="text-xs font-semibold text-slate-700">{w.client}</span>
+                      <span className="text-xs text-amber-600 bg-amber-50 px-1.5 py-0.5 rounded-full border border-amber-200 ml-auto">{w.flag}</span>
+                    </div>
+                    <p className="text-xs text-slate-500 pl-4">{w.detail}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
-      ))}
+      )}
     </div>
   );
 }
